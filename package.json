@@ -1,0 +1,19 @@
+{
+  "name": "daily-routine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node build.js"
+  },
+  "keywords": [],
+  "author": "Dovydas Stirpeika",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/espruino": "^1.94.7",
+    "@types/node": "^20.2.1",
+    "chokidar": "^3.5.3",
+    "tslib": "^2.5.1"
+  }
+}
