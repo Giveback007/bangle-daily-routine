@@ -1,5 +1,9 @@
 /// <reference types="espruino" />
 
+type str = string;
+type bol = boolean;
+type num = number;
+
 declare module 'heatshrink';
 
 declare var g: Graphics & {
@@ -28,14 +32,21 @@ declare var g: Graphics & {
 };
 
 namespace E {
-    export function showScroller(options: {
+    /** To clear/remove the scroller call E.showScroller() */
+    function showScroller(): void;
+    function showScroller(options: {
       h: number,
       c: number,
       draw: (idx: number, rect: { x: number, y: number, w: number, h: number }) => void,
       select: (idx: number, touch: { x: number, y: number }) => void,
       back?: () => void,
       remove?: () => void,
-    }): void;
+    }): {
+        draw();
+        drawItem(idx: number);
+    };
+
+    function showMessage(msg: string, title?: string): void;
 }
 
 /** https://www.espruino.com/ReferenceBANGLEJS2#Bangle */

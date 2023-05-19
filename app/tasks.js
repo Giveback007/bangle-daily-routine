@@ -1,8 +1,6 @@
-/** @type {{ [key: string]: string[] }} */
+/** @type {{ [key: str]: [bol, str][] }} */
 const tasks = {
-    Morning: [
-
-    ],
+    Morning: new Array(8).fill(null).map((_, i) => [false, `Task ${i + 1}`]),
     Evening: [
 
     ],
