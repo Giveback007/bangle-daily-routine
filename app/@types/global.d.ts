@@ -13,20 +13,23 @@ declare var g: Graphics & {
     setBgColor(color: string): typeof g;
     clearRect(x1: number, y1: number, x2: number, y2: number): typeof g;
     drawString(str: string, x: number, y: number): typeof g;
+    getFontHeight(): number;
+    wrapString(str: string, width: number): string[];
+
     theme: {
-        /** foreground colour */
+        /** foreground color */
         fg: number,
-        /** background colour */
+        /** background color */
         bg: number,
-        /** accented foreground colour */
+        /** accented foreground color */
         fg2: number,
-        /** accented background colour */
+        /** accented background color */
         bg2: number,
-        /** highlighted foreground colour */
+        /** highlighted foreground color */
         fgH: number,
-        /** highlighted background colour */
+        /** highlighted background color */
         bgH: number,
-        /** Is background dark (e.g. foreground should be a light colour) */
+        /** Is background dark (e.g. foreground should be a light color) */
         dark: boolean,
     }
 };
