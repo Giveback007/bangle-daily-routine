@@ -1,5 +1,3 @@
-const log = console.log;
-
 /** @param {number} ms */
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -36,3 +34,30 @@ const ellipsis = (str, maxLines, maxWidth) => {
     lines[lines.length - 1] = lastLine;
     return lines;
 }
+
+/**
+ * Debounces a function, ensuring it is not called multiple times within a specified time period.
+ *
+ * @param {Function} func - The function to debounce.
+ * @param {number} wait - The number of milliseconds to wait before invoking the debounced function.
+ * @returns {{ fnc: Function, cancel: Function }}
+ */
+function debounce(func, wait) {
+    let timeoutId;
+  
+    return {
+        fnc: function() {
+            const args = arguments;
+            clearTimeout(timeoutId || 0);
+            timeoutId = setTimeout(() => {
+                // @ts-ignore
+                func.apply(this, args);
+            }, wait);
+        },
+        cancel: () => clearTimeout(timeoutId || 0)
+    }
+}
+
+/** Math.random().toString(); */
+const genID = () =>
+    Math.random().toString().substring(2);

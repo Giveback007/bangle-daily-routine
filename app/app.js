@@ -1,59 +1,62 @@
+import './init.js';
 import './utils.js';
-import './tasks.js';
+import './data/tasks.js';
+import './state.js';
+import './check-list.js';
+import './render-menu.js';
 
-/**
- * @param {str} taskName
- */
-function renderCheckList(taskName) {
-    const pad = { x: 5, y: 5 }
-    const tsk = clone([[false, taskName]].concat(tasks[taskName]));
+function bootstrap() {
+    Bangle.setLCDBrightness(1);
+    Bangle.setLocked(false);
 
-    g.setFont("6x8:2").drawString(taskName, 10, 10);
-    const scroller = E.showScroller({
-        h: 55,
-        c: tsk.length,
-        draw : (idx, r) => {
-            const item = tsk[idx];
+    /** @type {State} */
+    let storedState = storage.readJSON(stateStore, false);
+    if (!storedState) {
+        storedState = state;
+        state.listItemRef = { lastID: 0 };
+        state.lists = genRoutines();
 
-            // handle the title
-            if(idx === 0) {
-                g.setFontVector(20);
-                const title = ellipsis(taskName, 2);
+        __MorningList.forEach((n) => {
+            const id = ++state.listItemRef.lastID;
+            state.lists[0].items.push(id);
+            state.listItemRef[id] = { n, d: 0, id };
+        });
 
-                // calculate the starting point for each line of the title and draw each line
-                title.forEach((line, i) => {
-                    const titleHeight = g.getFontHeight();
-                    const titleWidth = g.stringWidth(line);
+        __NightList.forEach((n) => {
+            const id = ++state.listItemRef.lastID;
+            state.lists[1].items.push(id);
+            state.listItemRef[id] = { n, d: 0, id };
+        });
+    }
 
-                    const x = (r.w - titleWidth) / 2;
-                    const y = r.y + (r.h - titleHeight) / (title.length * 2) + i * titleHeight;
+    onStateChange(storedState);
 
-                    g.drawString(line, x, y);
-                });
+    // -- Double Click BTN1 Render: [Main Menu] -- //
+    /**
+     * @typedef {Object} arg
+     * @property {boolean} state
+     * @property {number} lastTime
+     * @property {number} time
+     * @property {Pin} pin
+     */
 
-                return;
-            }
-
-            // draw the checkbox & task text
-            g.setFont("6x8:2")
-            const arr = ellipsis(`[${item[0] ? "x" : " "}] ${item[1]}`, 2);
-            arr.forEach((line, i) => g.drawString(line,
-                r.x + pad.x,
-                r.y + pad.y + i * g.getFontHeight() + (i * 5)
-            ));
-            g.drawRect(r.x, r.y, r.x + r.w - 1, r.y + r.h - 5); 
-        },
-        select : (idx) => {
-            const item = tsk[idx];
-            item[0] = !item[0];
-            scroller.draw();
+    let lastClick = 0;
+    setWatch(/** @param {arg} _ */ (_) => {
+        const now = Date.now();
+        if (now - lastClick < 750) {
+            lastClick = 0;
+            if (state.screen === 'checkList') renderMenu();
+            else if (state.screen === 'home') load(); // exit
+        } else {
+            lastClick = now;
         }
-    });
+
+    }, BTN1, { repeat: true, debounce: 50, edge: 'falling' });
+
+    // -- START -- //
+    setTimeout(() => {
+        renderMenu();
+    }, 0);
 }
 
-renderCheckList("Co Working Preparation Stuff 12345 More");
-// renderCheckList("Morning");
-
-// the next step:
-// 1. Add a menu to toggle between the different task lists
-
+wait(0).then(bootstrap);

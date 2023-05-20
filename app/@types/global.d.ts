@@ -1,11 +1,25 @@
 /// <reference types="espruino" />
+/// <reference types="./storage.d.ts" />
 
+// -- Global Types -- //
+declare const stateStore: string;
+declare const log: Console['log'];
+declare const storage: typeof import("Storage");
+
+// -- Shortcut Types -- //
 type str = string;
 type bol = boolean;
 type num = number;
+type fct = Function;
 
+type str_num = string | number;
+
+type Dict<T> = { [key: str]: T; };
+
+// -- Modules -- //
 declare module 'heatshrink';
 
+// -- Bangle Modules Modifiers -- //
 declare var g: Graphics & {
     setFontAlign(alignX: number, alignY: number): void;
     setFont(font: string, size?: number): typeof g;
@@ -16,6 +30,10 @@ declare var g: Graphics & {
     getFontHeight(): number;
     wrapString(str: string, width: number): string[];
 
+    setColor(r: str_num, g: str_num, b: str_num): void;
+    setColor(color: string): void;
+    setColor(color: number): void;
+    
     theme: {
         /** foreground color */
         fg: number,
@@ -34,17 +52,19 @@ declare var g: Graphics & {
     }
 };
 
+type scrollerOpts = {
+    h: number,
+    c: number,
+    draw: (idx: number, rect: { x: number, y: number, w: number, h: number }) => void,
+    select: (idx: number, touch: { x: number, y: number }) => void,
+    back?: () => void,
+    remove?: () => void,
+};
+
 namespace E {
     /** To clear/remove the scroller call E.showScroller() */
     function showScroller(): void;
-    function showScroller(options: {
-      h: number,
-      c: number,
-      draw: (idx: number, rect: { x: number, y: number, w: number, h: number }) => void,
-      select: (idx: number, touch: { x: number, y: number }) => void,
-      back?: () => void,
-      remove?: () => void,
-    }): {
+    function showScroller(options: scrollerOpts): {
         draw();
         drawItem(idx: number);
     };
@@ -54,3 +74,6 @@ namespace E {
 
 /** https://www.espruino.com/ReferenceBANGLEJS2#Bangle */
 declare var Bangle: any;
+
+declare var BTN: Pin;
+declare var BTN1: Pin;

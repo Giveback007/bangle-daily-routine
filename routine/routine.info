@@ -1,0 +1,6 @@
+require("Storage").write("timer.info",{
+    "id":"routine",
+    "name":"Routine",
+    "src":"routine.app.js",
+    "icon":"routine.img"
+});
