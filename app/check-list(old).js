@@ -1,25 +1,9 @@
-/** @param {number[]} list */
-const sortCheckList = (list) => list.sort((a, b) => {
-    if (a === -1) return -1;
-    if (b === -1) return 1;
-
-    const aDone = state.listItemRef[a].d;
-    const bDone = state.listItemRef[b].d;
-
-    if (aDone && !bDone) return 1;
-    if (!aDone && bDone) return -1;
-
-    return 0;
-});
-
 /**
- * @param {str} checkListID
+ * @param {number} checkListID
  */
-function renderCheckList(checkListID) {
-    state.screen = 'checkList';
-
+function renderCheckList_OLD(checkListID) {
     const pad = { x: 4, y: 8 }
-    const checkList = state.lists[checkListID];
+    const checkList = state.listItemRef[checkListID];
     let items = [-1].concat(checkList.items);
 
     let selectedIndex = -1;

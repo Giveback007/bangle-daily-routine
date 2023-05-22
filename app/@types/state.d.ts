@@ -1,6 +1,7 @@
 type State = {
-    screen: 'home' | 'checkList';
-    lists: Dict<checkList>;
+    screen: 'home' | num;
+    navHistory: ('home' | num)[];
+    homeScreen: num[];
     listItemRef: {
         /** This is incremented for every new checkListItem */
         lastID: num;

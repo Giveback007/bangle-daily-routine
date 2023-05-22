@@ -1,7 +1,8 @@
 /** @type {State} */
 let state = {
     screen: 'home',
-    lists: {},
+    navHistory: [],
+    homeScreen: [],
     listItemRef: { lastID: 0 }
 };
 
@@ -13,21 +14,15 @@ function onStateChange(newState) {
     storage.writeJSON(stateStore, state);
 }
 
-/** @param {str} id */
+/** @param {num} id */
 function resetChecklist(id) {
-    const checkList = state.lists[id];
-    checkList.items.forEach((id) =>
-        state.listItemRef[id].d = 0);
+    const itm = state.listItemRef[id];
+    if (typeof itm.d === 'number') 
+        itm.d = 0;
+    else
+        itm.d.forEach(resetChecklist);
 
-    onStateChange();
+    debounceChangeOnState.fnc();
 }
 
-const debounceChangeOnState = debounce(onStateChange, 300);
-
-// TODO
-// Next steps:
-// 1. Save the state of the check list to the Bangle's storage
-//  a. To do this we need to handle this in the state.js file
-//  b. The function will update the state object
-//  c. And will save the state of the check list
-// 2. Add a button to clear the check list
+const debounceChangeOnState = debounce(onStateChange, 100);

@@ -59,5 +59,30 @@ function debounce(func, wait) {
 }
 
 /** Math.random().toString(); */
-const genID = () =>
-    Math.random().toString().substring(2);
+const genID = () => Math.random().toString().substring(2);
+
+/** Get last item from an array
+ * @template T
+ * @param {T[]} arr
+ */
+const arrLast = arr => arr[arr.length - 1];
+
+/**
+ * Returns an object indicating how many total and how many left
+ * @param {number} id
+ * @returns {{ done: number, total: number, isDone: boolean }}
+ */
+function calcItemStatus(id) {
+    const itm = state.listItemRef[id];
+    if (typeof itm.d === 'number') return { done: itm.d, total: 1, isDone: itm.d === 1 };
+    
+    let total = 0;
+    let done = 0;
+    itm.d.forEach(x => {
+        total++;
+        const status = calcItemStatus(x);
+        if (status.isDone) done++;
+    });
+
+    return { done, total, isDone: done === total };
+}

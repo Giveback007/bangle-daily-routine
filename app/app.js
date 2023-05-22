@@ -1,9 +1,12 @@
+// TODO:
+// 1. Dark & Light Mode
+
 import './init.js';
 import './utils.js';
-import './data/tasks.js';
+import './data/enums.js';
+import './data/tasks.data.js';
 import './state.js';
-import './check-list.js';
-import './render-menu.js';
+import './render-checklist.js';
 
 function bootstrap() {
     Bangle.setLCDBrightness(1);
@@ -14,21 +17,10 @@ function bootstrap() {
     if (!storedState) {
         storedState = state;
         state.listItemRef = { lastID: 0 };
-        state.lists = genRoutines();
-
-        __MorningList.forEach((n) => {
-            const id = ++state.listItemRef.lastID;
-            state.lists[0].items.push(id);
-            state.listItemRef[id] = { n, d: 0, id };
-        });
-
-        __NightList.forEach((n) => {
-            const id = ++state.listItemRef.lastID;
-            state.lists[1].items.push(id);
-            state.listItemRef[id] = { n, d: 0, id };
-        });
+        state.homeScreen = genRoutines();
     }
 
+    storedState.navHistory = [];
     onStateChange(storedState);
 
     // -- Double Click BTN1 Render: [Main Menu] -- //
@@ -43,19 +35,16 @@ function bootstrap() {
     let lastClick = 0;
     setWatch(/** @param {arg} _ */ (_) => {
         const now = Date.now();
-        if (now - lastClick < 750) {
+        if ((now - lastClick) < 750) {
             lastClick = 0;
-            if (state.screen === 'checkList') renderMenu();
-            else if (state.screen === 'home') load(); // exit
-        } else {
-            lastClick = now;
+            renderScreen('prev');
         }
 
+        else lastClick = now;
     }, BTN1, { repeat: true, debounce: 50, edge: 'falling' });
-
     // -- START -- //
     setTimeout(() => {
-        renderMenu();
+        renderScreen('home');
     }, 0);
 }
 
