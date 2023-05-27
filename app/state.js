@@ -3,7 +3,7 @@ let state = {
     screen: 'home',
     navHistory: [],
     homeScreen: [],
-    listItemRef: { lastID: 0 }
+    listItemRef: { }
 };
 
 /**
@@ -14,13 +14,13 @@ function onStateChange(newState) {
     storage.writeJSON(stateStore, state);
 }
 
-/** @param {num} id */
+/** @param {str} id */
 function resetChecklist(id) {
     const itm = state.listItemRef[id];
-    if (typeof itm.d === 'number') 
+    if (itm.t === 0) 
         itm.d = 0;
     else
-        itm.d.forEach(resetChecklist);
+        itm.c.forEach(resetChecklist);
 
     debounceChangeOnState.fnc();
 }

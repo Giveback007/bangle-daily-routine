@@ -1,7 +1,7 @@
-const __MorningList = { n: "Morning", t: 1, d: [
+const __MorningList = { n: "Morning", c: [
     {
         n: "Morning Brain",
-        d: [
+        c: [
             "Caff 50mg",
             "Es Oil 15m: Mt & Rm",
             "40hz [1h]",
@@ -10,7 +10,7 @@ const __MorningList = { n: "Morning", t: 1, d: [
     },
     {
         n: "Morning Intestine",
-        d: [
+        c: [
             "TEA: Green",
             "TEA: Ginger",
             "TEA: Dill Weed (Eneldo)",
@@ -18,20 +18,24 @@ const __MorningList = { n: "Morning", t: 1, d: [
             "SDW: Garlic 5m",
             "SDW: Olive Oil",
             "SDW: Bread + Butter",
+            "Have Breakfast",
             "Sangre de Drago (3dr)",
             "Water + Salt (2g)",
         ]
     },
+    "[30m] Writing",
     "Brush Teeth",
-    "5min Exercise",
-    "5min Stretch",
-    "5min Meditation",
+    "Pu & Sq",
+    "[5m] Exercise",
+    "[5m] Stretch",
+    "[5m] Meditation",
     "Shave",
     "Shower",
     "Make Bed",
     {
         n: "Work Prep",
-        d: [
+        c: [
+            "Panax Ginseng",
             "Laptop + Case",
             "Laptop Stand",
             "Extension Cord",
@@ -48,17 +52,16 @@ const __MorningList = { n: "Morning", t: 1, d: [
     }
 ]};
 
-const __NightList = { n: "Night", t: 1, d: [
+const __NightList = { n: "Night", c: [
     {
         n: "Night Intestine",
-        d: [
+        c: [
             "TEA: Ginger",
             "TEA: Dill Weed (Eneldo)",
             "TEA: Curcuma",
             "SDW: Olive Oil",
             "SDW: Bread + Butter",
             "Sangre de Drago",
-            "Panax Ginseng",
         ]
     },
     "Brush Teeth",
@@ -68,31 +71,33 @@ const __NightList = { n: "Night", t: 1, d: [
     "Earplugs",
 ]};
 
-const __TasksList = { n: "Tasks", t: 2, d: [
+const __TasksList = { n: "Tasks", t: 2, c: [
     "Bread",
     "Butter",
 ]};
 
-const genRoutines = () => {
-    const lists = [__MorningList, __NightList, __TasksList];
+const genID = () => {
+    const randomNumber = Math.random();
+    return randomNumber.toString().split('.')[1];
+}
 
-    /** @param {string | { n: string; d: any[]; t: 0 | 1 | 2 }} task */
+const genRoutines = () => {
+    const lists = [__MorningList, __NightList, __TasksList, 'Task 1', 'Task 2'];
+
+    /** @param {string | { n: string; c: any[]; t?: 1 | 2 }} task */
     function genItem(task) {
-        const id = ++state.listItemRef.lastID;
+        const id = genID();
 
         if (typeof task === 'string') {
-            state.listItemRef[id] = { n: task, d: 0, id };
+            state.listItemRef[id] = { n: task, d: 0, id, t: 0 };
         } else {
-            const ids = task.d.map((x) => genItem(x));
-            state.listItemRef[id] = { n: task.n, d: ids, id, t: task.t ? task.t : 1 };
+            if (!task.c) log(task)
+            const children = task.c.map((x) => genItem(x));
+            state.listItemRef[id] = { n: task.n, c: children, id, t: task.t || 1 };
         }
 
         return id;
     }
 
-    // @ts-ignore
     return lists.map(genItem);
 };
-
-
-// TODO: Separate routines and checklists

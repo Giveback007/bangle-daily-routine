@@ -1,10 +1,9 @@
 /**
- * @arg {'home' | 'prev' | num} screen
+ * @arg {'home' | 'prev' | str} screen
  */
 function renderScreen(screen) {
     if (screen === 'prev') {
         const prevScreen = state.navHistory.pop();
-        log('prevScreen:', prevScreen);
         if (prevScreen === undefined) return load();
         screen = prevScreen;
     } else if (screen === 'home') {
@@ -23,11 +22,18 @@ function renderCheckList() {
     const pad = { x: 2, y: 3 }
     const checkBoxWidth = 36;
 
-    let list = screen === 'home' ? state.homeScreen : ref[screen].d;
-    if (typeof list === 'number') throw 'Invalid screen';
+    /** @type {str[]} */
+    let list;// = screen === 'home' && state.homeScreen;
+    if (screen === 'home') {
+        list = state.homeScreen;
+    } else {
+        const item = ref[screen];
+        if (item.t === 0) throw 'Invalid screen';
+        list = item.c;
+    }
     
     const titleText = screen === 'home' ? 'Routines & Check Lists' : ref[screen].n;
-    list = [-1].concat(list) // To add the title to the list
+    list = ['-1'].concat(list) // To add the title to the list
     
     let selcIndex = -1;
     const debounceClearSelected = debounce(() => {
@@ -45,27 +51,18 @@ function renderCheckList() {
             if (i === 0)
                 return drawTitle(isSelc, titleText, r, isHome ? 24 : 20);
 
-            const itm = ref[list[i]];
-            const type = checkListItemType[itm.t || 0];
-            const status = calcItemStatus(itm.id);
+            const item = ref[list[i]];
+            const type = checkListItemType[item.t || 0];
+            const status = calcItemStatus(item.id);
 
-            let color = "#FFFFFF";
-            if (isSelc) {
-                if (type === 'ITEM') {
-                    color = "#808080";
-                } else {
-                    color = "#0080FF";
-                }
-            } else if (status.done) {
-                // green
-                color = "#00FF00";
-            }
-            // grey: "#808080"
-            // darkGrey: "#404040"
-            // blue: "#0080FF"
+            let color = theme.fg;
+            if (isSelc)
+                color = type === 'ITEM' ? clr.gry : clr.lbl;
+            else if (status.isDone)
+                color = theme.fg2;
 
-            drawText(r, itm, pad, checkBoxWidth, color, isHome);
-            drawCheckBox(r, itm, pad, checkBoxWidth, status);
+            drawText(r, item, pad, checkBoxWidth, color, isHome);
+            drawCheckBox(r, item, pad, checkBoxWidth, status);
             g.drawRect(r.x, r.y, r.x + r.w - 1, r.y + r.h - 5);
         },
         select: (i) => {
@@ -82,12 +79,11 @@ function renderCheckList() {
             }
 
             const itm = ref[list[i]];
-            const type = checkListItemType[itm.t || 0];
-            if (type !== 'ITEM' && selcIndex === i) {
+            if (itm.t !== 0 && selcIndex === i) {
                 return renderScreen(itm.id);
             }
 
-            if (type === 'ITEM') {
+            if (itm.t === 0) {
                 itm.d = itm.d ? 0 : 1;
     
                 debounceChangeOnState.fnc();
@@ -112,7 +108,7 @@ function renderCheckList() {
 function drawTitle(isSelected, text, r, fontSize) {
     g.setFontVector(fontSize);
     const title = ellipsis(isSelected ? "Tap Again: \nReset Marks" : text, 2);
-    g.setColor(isSelected ? "#FF0000" : "#FFFFFF");
+    g.setColor(isSelected ? clr.red : theme.fg);
 
     // draw a box around the title if it is selected
     if (isSelected) g.drawRect(r.x, r.y, r.x + r.w - 1, r.y + r.h - 5);
@@ -173,7 +169,7 @@ function drawCheckBox(r, itm, pad, checkBoxWidth, status) {
     const centerX = w => (r.x + checkBoxWidth - w) / 2;
 
     // Fill the checkbox based on the completion status
-    if (typeof itm.d === 'number' && itm.d) {
+    if (itm.t === 0 && itm.d) {
         g.setFontVector(41);
         const fontH = g.getFontHeight();
         const text = "X";
@@ -182,12 +178,12 @@ function drawCheckBox(r, itm, pad, checkBoxWidth, status) {
             centerX(w) + (pad.x * 2),
             r.y + (r.h - fontH) / 2
         );
-    } else if (typeof itm.d === 'object') {
+    } else if (itm.t !== 0) {
         g.setFontVector(16);
         const fontH = g.getFontHeight();
 
-        const w1 = g.stringWidth(status.done);
-        g.drawString(status.done,
+        const w1 = g.stringWidth(status.totalDone);
+        g.drawString(status.totalDone,
             centerX(w1) + pad.x,
             r.y + (pad.y * 2) + 1
         );

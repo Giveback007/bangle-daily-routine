@@ -1,5 +1,6 @@
 // TODO:
 // 1. Dark & Light Mode
+// 2. Routines and Checklists, different behaviors.
 
 import './init.js';
 import './utils.js';
@@ -13,10 +14,9 @@ function bootstrap() {
     Bangle.setLocked(false);
 
     /** @type {State} */
-    let storedState = storage.readJSON(stateStore, false);
+    let storedState = storage.readJSON(stateStore, true);
     if (!storedState) {
         storedState = state;
-        state.listItemRef = { lastID: 0 };
         state.homeScreen = genRoutines();
     }
 

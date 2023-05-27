@@ -1,13 +1,33 @@
+type State = {
+    screen: 'home' | str;
+    navHistory: ('home' | str)[];
+    homeScreen: str[];
+    listItemRef: {
+        [key: str]: checkListItem;
+    };
+}
+
 type checkListItem = {
     /** Name */
-    n: str;
-    /** Done */
-    d: 0 | 1 | number[];
+    n: string;
     /** ID */
-    id: num,
-    /** Type: if `undefined` t = `"item"` */
-    t?: 0 | 1 | 2;
-};
+    id: string;
+} & ({
+    /** (undefined | 0) === "item" */
+    t: 0;
+    /** Not-Done = 0, Done = 1 */
+    d: 0 | 1;
+} | {
+    /** 1 = "routine" */
+    t: 1;
+    /** Child ids */
+    c: string[];
+} | {
+    /** 1 = "checklist" */
+    t: 2;
+    /** Child ids */
+    c: string[];
+});
 
 type rect = {
     x: number;

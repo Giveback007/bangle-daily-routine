@@ -1,4 +1,4 @@
-require("Storage").write("timer.info",{
+require("Storage").write("routine.info", {
     "id":"routine",
     "name":"Routine",
     "src":"routine.app.js",

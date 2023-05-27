@@ -1,3 +1,28 @@
+const clr = {
+    blc: "#000000",
+    wht: "#FFFFFF",
+    red: "#FF0000",
+    grn: "#00FF00",
+    blu: "#0000FF",
+    lbl: "#0080FF", // light blue
+    ylw: "#FFFF00",
+    cyn: "#00FFFF",
+    mgt: "#FF00FF",
+    gry: "#808080",
+}
+
+const theme = g.theme.dark ? {
+    t: 'dark',
+    "bg": clr.blc,
+    "fg": clr.wht,
+    "fg2": clr.grn,
+} : {
+    t: 'light',
+    "bg": clr.wht,
+    "fg": clr.blc,
+    "fg2": clr.grn,
+};
+
 /** @param {number} ms */
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -58,9 +83,6 @@ function debounce(func, wait) {
     }
 }
 
-/** Math.random().toString(); */
-const genID = () => Math.random().toString().substring(2);
-
 /** Get last item from an array
  * @template T
  * @param {T[]} arr
@@ -69,20 +91,20 @@ const arrLast = arr => arr[arr.length - 1];
 
 /**
  * Returns an object indicating how many total and how many left
- * @param {number} id
- * @returns {{ done: number, total: number, isDone: boolean }}
+ * @param {str} id
+ * @returns {{ totalDone: num, total: num, isDone: bol }}
  */
 function calcItemStatus(id) {
     const itm = state.listItemRef[id];
-    if (typeof itm.d === 'number') return { done: itm.d, total: 1, isDone: itm.d === 1 };
+    if (itm.t === 0) return { totalDone: itm.d, total: 1, isDone: itm.d === 1 };
     
     let total = 0;
     let done = 0;
-    itm.d.forEach(x => {
+    itm.c.forEach(x => {
         total++;
         const status = calcItemStatus(x);
         if (status.isDone) done++;
     });
 
-    return { done, total, isDone: done === total };
+    return { totalDone: done, total, isDone: done === total };
 }
