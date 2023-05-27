@@ -1,7 +1,9 @@
+type ID = string | number;
+
 type State = {
-    screen: 'home' | str;
-    navHistory: ('home' | str)[];
-    homeScreen: str[];
+    screen: 'home' | ID;
+    navHistory: ('home' | ID)[];
+    homeScreen: ID[];
     listItemRef: {
         [key: str]: checkListItem;
     };
@@ -11,7 +13,9 @@ type checkListItem = {
     /** Name */
     n: string;
     /** ID */
-    id: string;
+    id: ID;
+    /** Last modified, the undefined the object hasn't been modified */
+    m?: number;
 } & ({
     /** (undefined | 0) === "item" */
     t: 0;
@@ -21,12 +25,12 @@ type checkListItem = {
     /** 1 = "routine" */
     t: 1;
     /** Child ids */
-    c: string[];
+    c: ID[];
 } | {
     /** 1 = "checklist" */
     t: 2;
     /** Child ids */
-    c: string[];
+    c: ID[];
 });
 
 type rect = {

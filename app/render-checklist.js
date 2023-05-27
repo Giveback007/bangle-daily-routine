@@ -1,5 +1,5 @@
 /**
- * @arg {'home' | 'prev' | str} screen
+ * @arg {'home' | 'prev' | ID} screen
  */
 function renderScreen(screen) {
     if (screen === 'prev') {
@@ -16,13 +16,14 @@ function renderScreen(screen) {
     return renderCheckList();
 }
 
+let count = 0;
 function renderCheckList() {
     const ref = state.listItemRef;
     const screen = state.screen;
     const pad = { x: 2, y: 3 }
     const checkBoxWidth = 36;
 
-    /** @type {str[]} */
+    /** @type {ID[]} */
     let list;// = screen === 'home' && state.homeScreen;
     if (screen === 'home') {
         list = state.homeScreen;
@@ -33,7 +34,8 @@ function renderCheckList() {
     }
     
     const titleText = screen === 'home' ? 'Routines & Check Lists' : ref[screen].n;
-    list = ['-1'].concat(list) // To add the title to the list
+    // @ts-ignore
+    list = [titleText].concat(list);
     
     let selcIndex = -1;
     const debounceClearSelected = debounce(() => {
@@ -52,6 +54,10 @@ function renderCheckList() {
                 return drawTitle(isSelc, titleText, r, isHome ? 24 : 20);
 
             const item = ref[list[i]];
+            if (!item) {
+                log(list)
+                log('TEST-1', i, list[i]);
+            }
             const type = checkListItemType[item.t || 0];
             const status = calcItemStatus(item.id);
 

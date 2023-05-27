@@ -14,7 +14,7 @@ function onStateChange(newState) {
     storage.writeJSON(stateStore, state);
 }
 
-/** @param {str} id */
+/** @param {ID} id */
 function resetChecklist(id) {
     const itm = state.listItemRef[id];
     if (itm.t === 0) 

@@ -91,7 +91,7 @@ const arrLast = arr => arr[arr.length - 1];
 
 /**
  * Returns an object indicating how many total and how many left
- * @param {str} id
+ * @param {ID} id
  * @returns {{ totalDone: num, total: num, isDone: bol }}
  */
 function calcItemStatus(id) {

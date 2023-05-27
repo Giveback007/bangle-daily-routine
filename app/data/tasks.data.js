@@ -76,9 +76,13 @@ const __TasksList = { n: "Tasks", t: 2, c: [
     "Butter",
 ]};
 
-const genID = () => {
-    const randomNumber = Math.random();
-    return randomNumber.toString().split('.')[1];
+// const genID = () => {
+//     const randomNumber = Math.random();
+//     return randomNumber.toString().split('.')[1];
+// }
+
+function genID() {
+    return Math.floor(Math.random() * 900719925474091);
 }
 
 const genRoutines = () => {
