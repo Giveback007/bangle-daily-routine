@@ -1,6 +1,7 @@
 type ID = string | number;
 
 type State = {
+    ver: number;
     screen: 'home' | ID;
     navHistory: ('home' | ID)[];
     homeScreen: ID[];

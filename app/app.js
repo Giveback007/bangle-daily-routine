@@ -15,7 +15,7 @@ function bootstrap() {
 
     /** @type {State} */
     let storedState = storage.readJSON(stateStore, true);
-    if (!storedState) {
+    if (!storedState || storedState.ver !== state.ver) {
         storedState = state;
         state.homeScreen = genRoutines();
     }

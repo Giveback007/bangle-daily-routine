@@ -33,9 +33,23 @@ function renderCheckList() {
         list = item.c;
     }
     
+    const completed = [];
+    const incomplete = [];
+    list.forEach((id) => {
+        const itm = ref[id];
+        if (itm.t === 0) {
+            const status = calcItemStatus(id);
+            if (status.isDone) completed.push(id);
+            else incomplete.push(id);
+        } else {
+            incomplete.push(id);
+        }
+    })
+
+    // Add Title Text
     const titleText = screen === 'home' ? 'Routines & Check Lists' : ref[screen].n;
     // @ts-ignore
-    list = [titleText].concat(list);
+    list = [titleText].concat(incomplete, completed);
     
     let selcIndex = -1;
     const debounceClearSelected = debounce(() => {
@@ -77,6 +91,8 @@ function renderCheckList() {
                 if (selcIndex === 0) {
                     resetChecklist(screen);
                     selcIndex = -1;
+                    // @ts-ignore
+                    list = [titleText].concat(ref[screen].c)
                 } else {
                     selcIndex = i;
                 }

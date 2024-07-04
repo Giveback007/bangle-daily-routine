@@ -1,92 +1,33 @@
 const __MorningList = { n: "Morning", c: [
-    {
-        n: "Morning Brain",
-        c: [
-            "Caff 50mg",
-            "Es Oil 15m: Mt & Rm",
-            "40hz [1h]",
-            "Dress Up",
-        ],
-    },
-    {
-        n: "Morning Intestine",
-        c: [
-            "TEA: Green",
-            "TEA: Ginger",
-            "TEA: Dill Weed (Eneldo)",
-            "TEA: Curcuma",
-            "SDW: Garlic 5m",
-            "SDW: Olive Oil",
-            "SDW: Bread + Butter",
-            "Have Breakfast",
-            "Sangre de Drago (3dr)",
-            "Water + Salt (2g)",
-        ]
-    },
-    "[30m] Writing",
+    "Caff 50mg",
+    "[2m] Es Oil: Mt & Rm",
+    "Curcm & Mint Tea",
+    "Ginko Bil",
+    "Shower H&C",
     "Brush Teeth",
-    "Pu & Sq",
-    "[5m] Exercise",
-    "[5m] Stretch",
-    "[5m] Meditation",
     "Shave",
-    "Shower",
-    "Make Bed",
-    {
-        n: "Work Prep",
-        c: [
-            "Panax Ginseng",
-            "Laptop + Case",
-            "Laptop Stand",
-            "Extension Cord",
-            "Charger",
-            "2 Chrg Cables",
-            "Bangle.js",
-            "Bangle.js Cable",
-            "Mouse",
-            "Mousepad",
-            "Earbuds",
-            "Notebook",
-            "Pencil",
-        ]
-    }
+    "15m Writing",
+    "1L Water",
+    "3-Pu & 3-Sq",
 ]};
 
-const __NightList = { n: "Night", c: [
-    {
-        n: "Night Intestine",
-        c: [
-            "TEA: Ginger",
-            "TEA: Dill Weed (Eneldo)",
-            "TEA: Curcuma",
-            "SDW: Olive Oil",
-            "SDW: Bread + Butter",
-            "Sangre de Drago",
-        ]
-    },
-    "Brush Teeth",
-    "Meditation 5min",
-    "Melatonin",
-    "Sleeping Mask",
-    "Earplugs",
-]};
-
-const __TasksList = { n: "Tasks", t: 2, c: [
-    "Bread",
-    "Butter",
-]};
-
-// const genID = () => {
-//     const randomNumber = Math.random();
-//     return randomNumber.toString().split('.')[1];
-// }
+// const __NightList = { n: "Night", c: [
+//     "Tea",
+//     "Brush Teeth",
+//     "Meditation 5min",
+//     "Sleeping Mask",
+//     "Earplugs",
+// ]};
 
 function genID() {
     return Math.floor(Math.random() * 900719925474091);
 }
 
 const genRoutines = () => {
-    const lists = [__MorningList, __NightList, __TasksList, 'Task 1', 'Task 2'];
+    const lists = [
+        __MorningList,
+        // __NightList
+    ];
 
     /** @param {string | { n: string; c: any[]; t?: 1 | 2 }} task */
     function genItem(task) {

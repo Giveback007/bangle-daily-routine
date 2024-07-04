@@ -1,5 +1,6 @@
 /** @type {State} */
 let state = {
+    ver: 3,
     screen: 'home',
     navHistory: [],
     homeScreen: [],
