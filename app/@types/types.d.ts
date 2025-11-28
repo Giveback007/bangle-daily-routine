@@ -6,11 +6,11 @@ type State = {
     navHistory: ('home' | ID)[];
     homeScreen: ID[];
     listItemRef: {
-        [key: str]: checkListItem;
+        [key: str]: stateCheckListItem;
     };
 }
 
-type checkListItem = {
+type stateCheckListItem = {
     /** Name */
     n: string;
     /** ID */
@@ -49,3 +49,8 @@ type checkListItemType = {
     'ROUTINE': 1,
     'CHECKLIST': 2
 };
+
+type ListItem = {
+    n: str;
+    c: (str | ListItem)[]
+}

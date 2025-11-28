@@ -11,9 +11,9 @@
   "author": "Dovydas Stirpeika",
   "license": "MIT",
   "devDependencies": {
-    "@types/espruino": "^1.94.7",
-    "@types/node": "^20.2.1",
+    "@types/espruino": "^1.94.10",
+    "@types/node": "^24.10.1",
     "chokidar": "^3.5.3",
-    "tslib": "^2.5.1"
+    "tslib": "^2.8.1"
   }
 }

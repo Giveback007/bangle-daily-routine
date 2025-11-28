@@ -150,7 +150,7 @@ function drawTitle(isSelected, text, r, fontSize) {
 /**
  * 
  * @param {rect} r 
- * @param {checkListItem} itm
+ * @param {stateCheckListItem} itm
  * @param {{ x: number; y: number; }} pad
  * @param {number} checkBoxWidth
  * @param {string} color
@@ -178,7 +178,7 @@ function drawText(r, itm, pad, checkBoxWidth, color, isHome) {
 
 /**
 * @param {rect} r
- * @param {checkListItem} itm
+ * @param {stateCheckListItem} itm
  * @param {{ x: number; y: number; }} pad
  * @param {number} checkBoxWidth
  * @param {ReturnType<calcItemStatus>} status

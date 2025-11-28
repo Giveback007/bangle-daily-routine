@@ -3,6 +3,7 @@
 
 // -- Global Types -- //
 declare const stateStore: string;
+declare const listStore: string;
 declare const log: Console['log'];
 declare const storage: typeof import("Storage");
 

@@ -3,6 +3,9 @@ import { existsSync, mkdirSync, writeFileSync, readFileSync } from 'fs';
 import path from 'path';
 const { log } = console;
 
+const name = "routine"
+const info = {"id":name,"name":name[0].toUpperCase() + name.slice(1),"src":`${name}.app.js`,"icon":`${name}.img`}
+
 // -- UTILS -- //
 const importRegex = /\bimport\s+(?:.+\s+from\s+)?[\'"]([^"\']+)["\']/g;
 
@@ -33,12 +36,21 @@ function debounce(func, wait) {
     };
 };
 
+/**
+ * @param {str} src - The function to debounce.
+ * @param {str} dest - The number of milliseconds to delay.
+ */
+function copyFile(src, dest) {
+    const data = readFileSync(src);
+    writeFileSync(dest, data);
+}
+
 
 // -- BUILD -- //
 const build = async () => {
     const appRoot = 'app';
     const entry = path.join(appRoot, 'app.js');
-    const to = 'dist/app.js';
+    const to = `dist/${info.src}`;
 
     try {
         let code = readFileSync(entry, 'utf-8');
@@ -54,6 +66,10 @@ const build = async () => {
         
         if (!existsSync('dist')) mkdirSync('dist');
         writeFileSync(to, code);
+
+        copyFile("routine/icon.png", `dist/${name}.png`);
+        copyFile("routine/routine.list.json", "dist/routine.list.json")
+        writeFileSync(`dist/${name}.info`, JSON.stringify(info));
         
         log(`\n✅ [${time()}]: Build successful! from: "${entry}" to: "${to}" \n`);
     } catch (/** @type {any} */ error) {
@@ -67,10 +83,9 @@ const build = async () => {
     }
 };
 
-
 // -- WATCH -- //
 (function watch() {
-    const watcher = chokidar.watch('app/**/*', {
+    const watcher = chokidar.watch(['app/**/*', "routine/**/*"], {
         ignored: /(^|[\/\\])\../, // ignore dotfiles
         persistent: true
     });

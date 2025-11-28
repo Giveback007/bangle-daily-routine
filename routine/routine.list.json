@@ -1,0 +1,25 @@
+[
+    { "n": "Morning", "c": [
+        "Caff 50mg",
+        "Tea",
+        "Shower H&C",
+        "Brush Teeth",
+        "Shave",
+        "30m Writing",
+        "0.5L Water"
+    ]},
+    { "n": "Night", "c": [
+        "Brush Teeth",
+        "Meditation 5min",
+        "Sleeping Mask",
+        "Earplugs",
+        { "n": "Example Inner List", "c": [
+            "Item-1A",
+            "Item-2A",
+            { "n": "LV3 Inner List", "c": [
+                "Item-1B",
+                "Item-2B"
+            ] }
+        ] }
+]}
+]

@@ -1,33 +1,10 @@
-const __MorningList = { n: "Morning", c: [
-    "Caff 50mg",
-    "[2m] Es Oil: Mt & Rm",
-    "Curcm & Mint Tea",
-    "Ginko Bil",
-    "Shower H&C",
-    "Brush Teeth",
-    "Shave",
-    "15m Writing",
-    "1L Water",
-    "3-Pu & 3-Sq",
-]};
-
-// const __NightList = { n: "Night", c: [
-//     "Tea",
-//     "Brush Teeth",
-//     "Meditation 5min",
-//     "Sleeping Mask",
-//     "Earplugs",
-// ]};
-
 function genID() {
     return Math.floor(Math.random() * 900719925474091);
 }
 
 const genRoutines = () => {
-    const lists = [
-        __MorningList,
-        // __NightList
-    ];
+    /** @type {ListItem[]} */
+    const lists = storage.readJSON(listStore, true);
 
     /** @param {string | { n: string; c: any[]; t?: 1 | 2 }} task */
     function genItem(task) {
